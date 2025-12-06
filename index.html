@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Santa Dash - Dodge the Reindeer Poop!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🎅 SANTA DASH 💩</h1>
+        <div class="subtitle">Duck to avoid the reindeer poop!</div>
+        
+        <div id="gameOver" class="game-over hidden">
+            <h2>Game Over!</h2>
+            <p>Your Score: <span id="finalScore">0</span></p>
+            <p>Presents Collected: <span id="finalPresents">0</span></p>
+            <button id="restartBtn" class="btn">Play Again</button>
+        </div>
+        
+        <div id="startScreen" class="start-screen">
+            <h2>Select Your Character</h2>
+            <div class="character-selection">
+                <div class="character-option" data-character="santa">
+                    <canvas class="character-preview" id="preview-santa" width="60" height="90"></canvas>
+                    <p>Santa</p>
+                </div>
+                <div class="character-option" data-character="elf">
+                    <canvas class="character-preview" id="preview-elf" width="60" height="90"></canvas>
+                    <p>Elf</p>
+                </div>
+                <div class="character-option" data-character="snowman">
+                    <canvas class="character-preview" id="preview-snowman" width="60" height="90"></canvas>
+                    <p>Snowman</p>
+                </div>
+                <div class="character-option" data-character="gingerbread">
+                    <canvas class="character-preview" id="preview-gingerbread" width="60" height="90"></canvas>
+                    <p>Gingerbread</p>
+                </div>
+            </div>
+            <h3 style="margin-top: 20px;">How to Play</h3>
+            <p>🎮 Press <strong>DOWN ARROW</strong> or <strong>S</strong> to DUCK</p>
+            <p>🎁 Collect presents for bonus points</p>
+            <p>💩 Dodge the reindeer poop!</p>
+            <button id="startBtn" class="btn">Start Game</button>
+        </div>
+        
+        <div class="game-area">
+            <div class="score-board">
+                <div>Score: <span id="score">0</span></div>
+                <div>Presents: <span id="presents">0</span></div>
+                <div>High Score: <span id="highScore">0</span></div>
+            </div>
+            <canvas id="gameCanvas" width="800" height="400"></canvas>
+            <div class="controls">
+                <button id="duckBtn" class="control-btn">⬇️ DUCK</button>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <p><strong>Desktop:</strong> Press DOWN arrow or S to duck</p>
+            <p><strong>Mobile:</strong> Tap the DUCK button</p>
+        </div>
+    </div>
+    
+    <script src="game.js"></script>
+</body>
+</html>
+
