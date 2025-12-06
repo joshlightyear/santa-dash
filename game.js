@@ -97,12 +97,28 @@ function stopDuck() {
 
 function throwSnowball() {
     if (gameRunning && snowballsRemaining > 0) {
+        // Find the nearest poop to target
+        let targetPoop = null;
+        let minDistance = Infinity;
+        
+        for (let poop of poops) {
+            const distance = Math.sqrt(
+                Math.pow(poop.x - santa.x, 2) + 
+                Math.pow(poop.y - santa.y, 2)
+            );
+            if (distance < minDistance) {
+                minDistance = distance;
+                targetPoop = poop;
+            }
+        }
+        
         snowballs.push({
             x: santa.x + santa.width,
             y: santa.y + santa.height / 2,
             width: 15,
             height: 15,
-            speed: 8
+            speed: 8,
+            target: targetPoop // Store the target poop
         });
         snowballsRemaining--;
         document.getElementById('snowballs').textContent = snowballsRemaining;
@@ -181,13 +197,32 @@ function updatePoops() {
 }
 
 function updateSnowballs() {
-    // Move snowballs right and check collisions with poops
+    // Move snowballs with homing capability
     for (let i = snowballs.length - 1; i >= 0; i--) {
-        snowballs[i].x += snowballs[i].speed;
+        const snowball = snowballs[i];
+        
+        // If snowball has a target and target still exists, home in on it
+        if (snowball.target && poops.includes(snowball.target)) {
+            const target = snowball.target;
+            
+            // Calculate direction to target
+            const dx = target.x + target.width / 2 - (snowball.x + snowball.width / 2);
+            const dy = target.y + target.height / 2 - (snowball.y + snowball.height / 2);
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            // Normalize and apply speed
+            if (distance > 0) {
+                snowball.x += (dx / distance) * snowball.speed;
+                snowball.y += (dy / distance) * snowball.speed;
+            }
+        } else {
+            // No target or target destroyed, move straight right
+            snowball.x += snowball.speed;
+        }
         
         // Check collision with poops
         for (let j = poops.length - 1; j >= 0; j--) {
-            if (checkCollision(snowballs[i], poops[j])) {
+            if (checkCollision(snowball, poops[j])) {
                 // Destroy both snowball and poop
                 poops.splice(j, 1);
                 snowballs.splice(i, 1);
@@ -196,8 +231,9 @@ function updateSnowballs() {
             }
         }
         
-        // Remove snowballs that go off screen
-        if (snowballs[i] && snowballs[i].x > canvas.width) {
+        // Remove snowballs that go off screen or too far
+        if (snowballs[i] && (snowball.x > canvas.width + 50 || snowball.x < -50 || 
+            snowball.y > canvas.height + 50 || snowball.y < -50)) {
             snowballs.splice(i, 1);
         }
     }
