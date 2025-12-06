@@ -40,8 +40,10 @@
             </div>
             <h3 style="margin-top: 20px;">How to Play</h3>
             <p>🎮 Press <strong>DOWN ARROW</strong> or <strong>S</strong> to DUCK</p>
+            <p>❄️ Press <strong>SPACE</strong> to THROW SNOWBALLS</p>
             <p>🎁 Collect presents for bonus points</p>
-            <p>💩 Dodge the reindeer poop!</p>
+            <p>💩 Dodge or destroy the reindeer poop!</p>
+            <p>⚠️ You only have 20 snowballs - use them wisely!</p>
             <button id="startBtn" class="btn">Start Game</button>
         </div>
         
@@ -49,17 +51,19 @@
             <div class="score-board">
                 <div>Score: <span id="score">0</span></div>
                 <div>Presents: <span id="presents">0</span></div>
+                <div>Snowballs: <span id="snowballs">20</span></div>
                 <div>High Score: <span id="highScore">0</span></div>
             </div>
             <canvas id="gameCanvas" width="800" height="400"></canvas>
             <div class="controls">
                 <button id="duckBtn" class="control-btn">⬇️ DUCK</button>
+                <button id="throwBtn" class="control-btn">❄️ THROW</button>
             </div>
         </div>
         
         <div class="instructions">
-            <p><strong>Desktop:</strong> Press DOWN arrow or S to duck</p>
-            <p><strong>Mobile:</strong> Tap the DUCK button</p>
+            <p><strong>Desktop:</strong> Press DOWN arrow or S to duck, SPACE to throw snowballs</p>
+            <p><strong>Mobile:</strong> Tap the DUCK or THROW buttons</p>
         </div>
     </div>
     

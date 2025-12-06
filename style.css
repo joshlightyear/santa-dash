@@ -70,12 +70,13 @@ h1 {
 .controls {
     display: flex;
     justify-content: center;
+    gap: 15px;
     margin-top: 15px;
 }
 
 .control-btn {
     font-size: 1.5em;
-    padding: 15px 40px;
+    padding: 15px 30px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
@@ -84,6 +85,8 @@ h1 {
     font-weight: bold;
     transition: transform 0.1s, box-shadow 0.1s;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    flex: 1;
+    max-width: 200px;
 }
 
 .control-btn:hover {

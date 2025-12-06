@@ -11,6 +11,8 @@ let highScore = localStorage.getItem('santaDashHighScore') || 0;
 let gameSpeed = 3;
 let frameCount = 0;
 let selectedCharacter = 'santa'; // Default character
+let snowballsRemaining = 20; // Limited snowballs
+let snowballs = []; // Array to store active snowballs
 
 // Santa Properties
 const santa = {
@@ -42,6 +44,10 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowDown' || e.key.toLowerCase() === 's') {
         duck();
     }
+    if (e.key === ' ' || e.key === 'Spacebar') {
+        e.preventDefault(); // Prevent page scroll
+        throwSnowball();
+    }
 });
 
 document.addEventListener('keyup', (e) => {
@@ -63,6 +69,13 @@ document.getElementById('duckBtn').addEventListener('touchend', (e) => {
     stopDuck();
 });
 
+// Snowball button controls
+document.getElementById('throwBtn').addEventListener('click', throwSnowball);
+document.getElementById('throwBtn').addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    throwSnowball();
+});
+
 // Start/Restart buttons
 document.getElementById('startBtn').addEventListener('click', startGame);
 document.getElementById('restartBtn').addEventListener('click', () => {
@@ -82,6 +95,20 @@ function stopDuck() {
     santa.y = santa.normalY;
 }
 
+function throwSnowball() {
+    if (gameRunning && snowballsRemaining > 0) {
+        snowballs.push({
+            x: santa.x + santa.width,
+            y: santa.y + santa.height / 2,
+            width: 15,
+            height: 15,
+            speed: 8
+        });
+        snowballsRemaining--;
+        document.getElementById('snowballs').textContent = snowballsRemaining;
+    }
+}
+
 function startGame() {
     document.getElementById('startScreen').classList.add('hidden');
     gameRunning = true;
@@ -91,6 +118,8 @@ function startGame() {
     frameCount = 0;
     poops = [];
     presents = [];
+    snowballs = [];
+    snowballsRemaining = 20; // Reset snowballs
     santa.isDucking = false;
     santa.y = santa.normalY;
     
@@ -98,6 +127,7 @@ function startGame() {
     reindeer.x = 800;
     
     document.getElementById('highScore').textContent = highScore;
+    document.getElementById('snowballs').textContent = snowballsRemaining;
     gameLoop();
 }
 
@@ -146,6 +176,29 @@ function updatePoops() {
         if (poops[i].y > 360 || poops[i].x < -50) {
             poops.splice(i, 1);
             score += 10; // Points for dodging
+        }
+    }
+}
+
+function updateSnowballs() {
+    // Move snowballs right and check collisions with poops
+    for (let i = snowballs.length - 1; i >= 0; i--) {
+        snowballs[i].x += snowballs[i].speed;
+        
+        // Check collision with poops
+        for (let j = poops.length - 1; j >= 0; j--) {
+            if (checkCollision(snowballs[i], poops[j])) {
+                // Destroy both snowball and poop
+                poops.splice(j, 1);
+                snowballs.splice(i, 1);
+                score += 25; // Bonus points for destroying poop
+                break; // Exit inner loop since snowball is destroyed
+            }
+        }
+        
+        // Remove snowballs that go off screen
+        if (snowballs[i] && snowballs[i].x > canvas.width) {
+            snowballs.splice(i, 1);
         }
     }
 }
@@ -300,6 +353,22 @@ function drawPresents() {
     }
 }
 
+function drawSnowballs() {
+    for (let snowball of snowballs) {
+        // Draw snowball
+        ctx.fillStyle = '#FFFFFF';
+        ctx.beginPath();
+        ctx.arc(snowball.x + snowball.width / 2, snowball.y + snowball.height / 2, snowball.width / 2, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Add some shine
+        ctx.fillStyle = '#E6F2FF';
+        ctx.beginPath();
+        ctx.arc(snowball.x + snowball.width / 2 - 3, snowball.y + snowball.height / 2 - 3, 3, 0, Math.PI * 2);
+        ctx.fill();
+    }
+}
+
 function drawGround() {
     // Snowy ground
     ctx.fillStyle = '#FFFFFF';
@@ -360,6 +429,7 @@ function gameLoop() {
     updateReindeer();
     updatePoops();
     updatePresents();
+    updateSnowballs(); // Update snowballs
     checkCollisions();
     
     // Increase score over time
@@ -374,6 +444,7 @@ function gameLoop() {
     drawSanta();
     drawPoop();
     drawPresents();
+    drawSnowballs(); // Draw snowballs
     
     // Update score display
     document.getElementById('score').textContent = score;
