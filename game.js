@@ -446,6 +446,12 @@ function gameLoop() {
     
     frameCount++;
     
+    // 5-minute bonus (5 minutes = 300 seconds = 18000 frames at 60fps)
+    if (frameCount % 18000 === 0 && frameCount > 0) {
+        score += 500;
+        showBonusMessage();
+    }
+    
     // Increase difficulty over time
     if (frameCount % 600 === 0) {
         gameSpeed += 0.5;
@@ -501,6 +507,19 @@ function gameOver() {
     document.getElementById('finalScore').textContent = score;
     document.getElementById('finalPresents').textContent = presentsCollected;
     document.getElementById('gameOver').classList.remove('hidden');
+}
+
+function showBonusMessage() {
+    // Create bonus message element
+    const bonusDiv = document.createElement('div');
+    bonusDiv.className = 'bonus-message';
+    bonusDiv.textContent = '🎉 5 MINUTE BONUS! +500 POINTS! 🎉';
+    document.body.appendChild(bonusDiv);
+    
+    // Remove after animation
+    setTimeout(() => {
+        bonusDiv.remove();
+    }, 3000);
 }
 
 // Character Selection
