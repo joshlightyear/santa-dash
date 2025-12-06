@@ -220,9 +220,18 @@ function updateSnowballs() {
             snowball.x += snowball.speed;
         }
         
+        // Check collision with reindeer
+        if (snowballs[i] && checkCollision(snowball, reindeer)) {
+            snowballs.splice(i, 1);
+            score += 100; // Big bonus for hitting the reindeer!
+            // Knock reindeer off screen
+            reindeer.x = canvas.width + 20;
+            continue; // Skip the rest since snowball is destroyed
+        }
+        
         // Check collision with poops
         for (let j = poops.length - 1; j >= 0; j--) {
-            if (checkCollision(snowball, poops[j])) {
+            if (snowballs[i] && checkCollision(snowball, poops[j])) {
                 // Destroy both snowball and poop
                 poops.splice(j, 1);
                 snowballs.splice(i, 1);
