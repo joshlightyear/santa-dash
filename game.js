@@ -97,11 +97,10 @@ function stopDuck() {
 
 function throwSnowball() {
     if (gameRunning && snowballsRemaining > 0) {
-        // Find the nearest target (poop or reindeer)
-        let target = null;
+        // Find the nearest poop to target
+        let targetPoop = null;
         let minDistance = Infinity;
         
-        // Check all poops
         for (let poop of poops) {
             const distance = Math.sqrt(
                 Math.pow(poop.x - santa.x, 2) + 
@@ -109,18 +108,8 @@ function throwSnowball() {
             );
             if (distance < minDistance) {
                 minDistance = distance;
-                target = poop;
+                targetPoop = poop;
             }
-        }
-        
-        // Also check the reindeer
-        const reindeerDistance = Math.sqrt(
-            Math.pow(reindeer.x - santa.x, 2) + 
-            Math.pow(reindeer.y - santa.y, 2)
-        );
-        if (reindeerDistance < minDistance) {
-            minDistance = reindeerDistance;
-            target = reindeer;
         }
         
         snowballs.push({
@@ -129,8 +118,7 @@ function throwSnowball() {
             width: 15,
             height: 15,
             speed: 8,
-            target: target, // Store the target (poop or reindeer)
-            isReindeerTarget: target === reindeer
+            target: targetPoop // Store the target poop
         });
         snowballsRemaining--;
         document.getElementById('snowballs').textContent = snowballsRemaining;
@@ -213,18 +201,8 @@ function updateSnowballs() {
     for (let i = snowballs.length - 1; i >= 0; i--) {
         const snowball = snowballs[i];
         
-        // Determine if target is valid
-        let hasValidTarget = false;
-        if (snowball.target) {
-            if (snowball.isReindeerTarget && snowball.target === reindeer) {
-                hasValidTarget = true;
-            } else if (!snowball.isReindeerTarget && poops.includes(snowball.target)) {
-                hasValidTarget = true;
-            }
-        }
-        
-        // If snowball has a valid target, home in on it
-        if (hasValidTarget) {
+        // If snowball has a target and target still exists, home in on it
+        if (snowball.target && poops.includes(snowball.target)) {
             const target = snowball.target;
             
             // Calculate direction to target
@@ -240,15 +218,6 @@ function updateSnowballs() {
         } else {
             // No target or target destroyed, move straight right
             snowball.x += snowball.speed;
-        }
-        
-        // Check collision with reindeer
-        if (snowballs[i] && checkCollision(snowball, reindeer)) {
-            snowballs.splice(i, 1);
-            score += 100; // Big bonus for hitting the reindeer!
-            // Knock reindeer off screen
-            reindeer.x = canvas.width + 20;
-            continue; // Skip the rest since snowball is destroyed
         }
         
         // Check collision with poops
