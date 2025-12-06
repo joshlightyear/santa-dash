@@ -533,6 +533,29 @@ function drawSantaCharacter(ctx, x, y, width, height, isDucking) {
     ctx.fillStyle = '#FFDAB9';
     ctx.fillRect(x + 10, y + (isDucking ? 5 : 10), 30, 20);
     
+    // Eyes
+    ctx.fillStyle = '#000000';
+    ctx.beginPath();
+    ctx.arc(x + 18, y + (isDucking ? 12 : 17), 2, 0, Math.PI * 2);
+    ctx.arc(x + 32, y + (isDucking ? 12 : 17), 2, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Rosy cheeks
+    ctx.fillStyle = '#FFB6C1';
+    ctx.globalAlpha = 0.6;
+    ctx.beginPath();
+    ctx.arc(x + 14, y + (isDucking ? 15 : 20), 3, 0, Math.PI * 2);
+    ctx.arc(x + 36, y + (isDucking ? 15 : 20), 3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1.0;
+    
+    // Smile (above beard)
+    ctx.strokeStyle = '#000000';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(x + 25, y + (isDucking ? 18 : 23), 4, 0, Math.PI);
+    ctx.stroke();
+    
     // Santa's beard
     ctx.fillStyle = '#FFFFFF';
     ctx.fillRect(x + 10, y + (isDucking ? 20 : 25), 30, 15);
@@ -558,6 +581,36 @@ function drawElfCharacter(ctx, x, y, width, height, isDucking) {
     // Elf face
     ctx.fillStyle = '#FFDAB9';
     ctx.fillRect(x + 10, y + (isDucking ? 5 : 10), 30, 20);
+    
+    // Eyes (big elf eyes)
+    ctx.fillStyle = '#000000';
+    ctx.beginPath();
+    ctx.arc(x + 18, y + (isDucking ? 12 : 17), 2.5, 0, Math.PI * 2);
+    ctx.arc(x + 32, y + (isDucking ? 12 : 17), 2.5, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Eye highlights (sparkly elf eyes)
+    ctx.fillStyle = '#FFFFFF';
+    ctx.beginPath();
+    ctx.arc(x + 17, y + (isDucking ? 11 : 16), 1, 0, Math.PI * 2);
+    ctx.arc(x + 31, y + (isDucking ? 11 : 16), 1, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Happy smile
+    ctx.strokeStyle = '#000000';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(x + 25, y + (isDucking ? 18 : 23), 5, 0, Math.PI);
+    ctx.stroke();
+    
+    // Rosy cheeks
+    ctx.fillStyle = '#FFB6C1';
+    ctx.globalAlpha = 0.6;
+    ctx.beginPath();
+    ctx.arc(x + 14, y + (isDucking ? 15 : 20), 3, 0, Math.PI * 2);
+    ctx.arc(x + 36, y + (isDucking ? 15 : 20), 3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1.0;
     
     // Elf hat (pointy)
     ctx.fillStyle = '#228B22';
